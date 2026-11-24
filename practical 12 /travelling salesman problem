@@ -1,0 +1,75 @@
+
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+#define INF 99999
+
+int main() {
+    int n;
+
+    cout << "Enter number of cities: ";
+    cin >> n;
+
+    int cost[10][10];
+
+    cout << "Enter cost matrix:\n";
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> cost[i][j];
+        }
+    }
+
+    int path[10];
+
+    for (int i = 0; i < n; i++) {
+        path[i] = i;
+    }
+
+    int minCost = INF;
+    int bestPath[10];
+
+    do {
+        int currentCost = 0;
+        bool valid = true;
+
+        for (int i = 0; i < n - 1; i++) {
+            if (cost[path[i]][path[i + 1]] == INF) {
+                valid = false;
+                break;
+            }
+
+            currentCost += cost[path[i]][path[i + 1]];
+        }
+
+        if (valid && cost[path[n - 1]][path[0]] != INF) {
+            currentCost += cost[path[n - 1]][path[0]];
+
+            if (currentCost < minCost) {
+                minCost = currentCost;
+
+                for (int i = 0; i < n; i++) {
+                    bestPath[i] = path[i];
+                }
+            }
+        }
+
+    } while (next_permutation(path + 1, path + n));
+
+    if (minCost == INF) {
+        cout << "\nNo valid tour exists.\n";
+    } else {
+        cout << "\nMinimum travelling cost: " << minCost;
+
+        cout << "\nBest Path: ";
+
+        for (int i = 0; i < n; i++) {
+            cout << bestPath[i] + 1 << " -> ";
+        }
+
+        cout << bestPath[0] + 1 << endl;
+    }
+
+    return 0;
+}
